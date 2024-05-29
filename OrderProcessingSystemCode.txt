@@ -1,0 +1,73 @@
+# Author: Malik Abdulmalik
+# CUID: *********
+# BUSI2401 SECTION C
+
+Product = {'small': 14.99, 'medium': 27.99, 'large': 39.99}
+Delivery = {'Land': [15.00, 0.25], 'Air': [30.00, 1.00], 'Nextday': [48.00, 1.50]}
+GST = 0.05
+QST = 0.09975
+
+def checkInput(size):
+    while True:
+        try:
+            quantity = int(input(f"How many {size} jars do you want? "))
+        except ValueError:
+            print('You did not enter an integer.')
+        else:
+            return quantity
+
+def calculate_shipping_cost(delivery_method, s_demand, m_demand, l_demand):
+    if delivery_method in Delivery:
+        base_cost = Delivery[delivery_method][0]
+        variable_cost = (s_demand + m_demand + l_demand) * Delivery[delivery_method][1]
+        return base_cost + variable_cost
+    return 0
+
+def printInvoice(order_number, s_demand, m_demand, l_demand, shipment, subtotal, shipping_cost, gst_cost, qst_cost, total_cost):
+    print(f"This is your Order Information for Order {order_number}")
+    print("You ordered: ")
+    print(f"**** {s_demand} Small Jars.")
+    print(f"**** {m_demand} Medium Jars.")
+    print(f"**** {l_demand} Large Jars.")
+    print(f"It will be delivered by {shipment}")
+    print(f'Subtotal: ${subtotal:.2f}')
+    print(f'Shipping and Handling: ${shipping_cost:.2f}')
+    print(f'GST: ${gst_cost:.2f}')
+    print(f'QST: ${qst_cost:.2f}')
+    print(f'ORDER TOTAL: ${total_cost:.2f}')
+
+def main():
+    order_number = 1
+    continue_order = 'Y'
+    while continue_order.upper() == 'Y' or continue_order.upper() == 'YES':
+        s_demand = checkInput("small")
+        m_demand = checkInput('medium')
+        l_demand = checkInput("large")
+
+        subtotal = (s_demand * Product["small"]) + (m_demand * Product['medium']) + (l_demand * Product['large'])
+
+        print("We can deliver by: Land, Air, or Nextday")
+        shipment = input("Do you want it delivered by land? (Y/N) ")
+        if shipment.upper() == "YES" or shipment.upper() == "Y":
+            shipment = "Land"
+        elif shipment.upper() == "NO" or shipment.upper() == 'N':
+            shipment = input("Do you want it delivered by Air? (Y/N) ")
+            if shipment.upper() == "Y" or shipment.upper() == "YES":
+                shipment = "Air"
+            else:
+                shipment = "Nextday"
+
+        shipping_cost = calculate_shipping_cost(shipment, s_demand, m_demand, l_demand)
+
+        gst_cost = (shipping_cost + subtotal) * GST
+        qst_cost = (shipping_cost + subtotal) * QST
+        total_cost = subtotal + shipping_cost + gst_cost + qst_cost
+
+        printInvoice(order_number, s_demand, m_demand, l_demand, shipment, subtotal, shipping_cost, gst_cost, qst_cost, total_cost)
+        continue_order = input("Are there more orders? (Y/N) ")
+        order_number += 1
+
+    print('Thank you for shopping with us!')
+
+if __name__ == "__main__":
+    main()
