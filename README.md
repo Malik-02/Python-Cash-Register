@@ -1,1 +1,2 @@
 # OrderProcessingSystem
+In this project, I developed a Python-based order processing system for Honey Comb, a producer of organic honey. The system allows users to place orders for different jar sizes, choose delivery methods, and calculate the total cost including taxes. By implementing input validation, error handling, and invoice generation, I simulated a real-world e-commerce scenario, enhancing my practical coding skills and understanding of business processes.
